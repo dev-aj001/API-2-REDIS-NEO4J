@@ -23,7 +23,7 @@ services:
   
   # NODE_APP service
   rutas-api:
-    image: api-redis-neo4j
+    image: jair23/api-redis-neo4j
     container_name: rutas-api
     ports:
       - "3000:3000"
