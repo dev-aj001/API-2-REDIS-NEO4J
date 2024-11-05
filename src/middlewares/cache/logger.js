@@ -24,8 +24,8 @@ module.exports = (req, res, next, redisClient) => {
         });
 
         // Imprimir en consola
-        console.log(key);
-        console.log(value);
+        // console.log(key);
+        // console.log(value);
 
         // Guardar en redis
         try {

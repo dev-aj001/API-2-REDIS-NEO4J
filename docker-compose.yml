@@ -1,35 +1,37 @@
-version: '3.9'
+
 services:
-  #node.js app
-  app:
-    image: yasg07/lab_neo4j
-    container_name: neo4j_api
-    ports:
-      -  "3000:3000"
-    environment:
-      -  NEO4J_URI=neo4j://neo4jdb:7687
-      -  REDIS_HOST=rediscachedb
-      -  REDIS_PORT=6379
-    depends_on:
-      -  neo4jdb
-      -  rediscachedb
-    volumes:
-      -  .:/usr/src/app
-      -  /usr/src/app/node_modules
-    command: npm start
-  #Neo4j
-  neo4jdb:
+  # NEO4J service
+  neo4j:
     image: neo4j
-    container_name: neo4jdb
+    container_name: neo1
     ports:
-      -  "7474:7474"
-      -  "7687:7687"
+      - "7474:7474"
+      - "7687:7687"
     environment:
-      -  NEO4J_AUTH=none
-  #redis-cache-database
-  rediscachedb:
-    image: redis/redis-stack
-    container_name: rediscachedb
+      - NEO4J_AUTH=none
+    networks:
+      - labs
+  # REDIS service
+  redis:
+    image: redis
+    container_name: redis01
     ports:
-      -  "6379:6379"
-      -  "8001:8001"
+      - "6379:6379"
+      - "8001:8001"
+    networks:
+      - labs
+  
+  # NODE_APP service
+  rutas-api:
+    image: api-redis-neo4j
+    container_name: rutas-api
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - neo4j
+      - redis
+    networks:
+      - labs
+networks:
+  labs:
+    driver: bridge

@@ -147,7 +147,7 @@ module.exports = {
 
             const soporte = result.records.map(record => record.get('e').properties);
 
-            if (proyectos.length === 0) {
+            if (soporte.length === 0) {
                 res.data = { code: 404, message: "no se encontraron coincidencias" };
                 return res.status(404).json(res.data);
             }
@@ -221,8 +221,8 @@ module.exports = {
             }
 
             if (!response.actualizacion_realizada) {
-                res.data = { code: 204, message: "la actualizacion no genero cambios" };
-                return res.status(204).json(res.data);
+                res.data = { code: 200, message: "la actualizacion no genero cambios, verifica los datos" };
+                return res.status(200).json(res.data);
             }
 
             res.data = response;
@@ -262,8 +262,8 @@ module.exports = {
             }
 
             if (!response.actualizacion_realizada) {
-                res.data = { code: 204, message: "la actualizacion no genero cambios" };
-                return res.status(204).json(res.data);
+                res.data = { code: 200, message: "la actualizacion no genero cambios, verifica los datos" };
+                return res.status(200).json(res.data);
             }
 
             res.data = response;
@@ -285,6 +285,8 @@ module.exports = {
         'DELETE r ' +
         'CREATE (p)-[:DESARROLLADO_POR]->(sNueva)';
 
+        console.log('q3');
+
         const params = {
             proyecto: req.body.proyecto_id || ' ',
             destino: req.body.sucursal_destino || ' ',
@@ -295,14 +297,16 @@ module.exports = {
         try {
             const result = await session.run(query, params);
 
+            console.log('Q3: ' + result.summary.query);
+
             const response = {
                 relaciones_actualizadas : result.summary.updateStatistics._stats.relationshipsCreated,
                 actualizacion_realizada : result.summary.updateStatistics._containsUpdates || false,
             }
 
             if (!response.actualizacion_realizada) {
-                res.data = { code: 204, message: "la actualizacion no genero cambios" };
-                return res.status(204).json(res.data);
+                res.data = { code: 200, message: "la actualizacion no genero cambios, verifica los datos" };
+                return res.status(200).json(res.data);
             }
 
             res.data = response;
@@ -342,8 +346,8 @@ module.exports = {
             }
 
             if (!response.actualizacion_realizada) {
-                res.data = { code: 204, message: "la actualizacion no genero cambios" };
-                return res.status(204).json(res.data);
+                res.data = { code: 200, message: "la actualizacion no genero cambios, verifica los datos" };
+                return res.status(200).json(res.data);
             }
 
             res.data = response;
@@ -382,8 +386,8 @@ module.exports = {
             }
 
             if (!response.actualizacion_realizada) {
-                res.data = { code: 204, message: "la actualizacion no genero cambios" };
-                return res.status(204).json(res.data);
+                res.data = { code: 200, message: "la actualizacion no genero cambios, verifica los datos" };
+                return res.status(200).json(res.data);
             }
 
             res.data = response;
@@ -404,10 +408,10 @@ module.exports = {
         'MATCH (sucursal:Sucursal)<-[:DESARROLLADO_POR]-(p) ' +
         'MATCH (cliente:Cliente)-[:CONTRATA]->(p) ' +
         'MATCH (empleado:Empleado)<-[:PROGRAMADO_POR|GESTIONADO_POR|SOPORTADO_POR]-(p) ' +
-        'MARGE (reunion:Reunion {id: $reunion, fecha: $fecha, hora: $hora, descripcion: $descripcion}) ' +
-        'MARGE (sucursal)-[:ORGANIZA]->(reunion) ' +
-        'MARGE (empleado)-[:ASISTE_A]->(reunion) ' +
-        'MARGE (cliente)-[:ASISTE_A]->(reunion)';
+        'MERGE (reunion:Reunion {id: $reunion, fecha: $fecha, hora: $hora, descripcion: $descripcion}) ' +
+        'MERGE (sucursal)-[:ORGANIZA]->(reunion) ' +
+        'MERGE (empleado)-[:ASISTE_A]->(reunion) ' +
+        'MERGE (cliente)-[:ASISTE_A]->(reunion)';
 
         const params = {
             reunion: req.body.reunion_id || ' ',
@@ -428,8 +432,8 @@ module.exports = {
             }
 
             if (!response.actualizacion_realizada) {
-                res.data = { code: 204, message: "la actualizacion no genero cambios" };
-                return res.status(204).json(res.data);
+                res.data = { code: 200, message: "la actualizacion no genero cambios, verifica los datos" };
+                return res.status(200).json(res.data);
             }
 
             res.data = response;

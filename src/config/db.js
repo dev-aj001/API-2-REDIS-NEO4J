@@ -5,7 +5,7 @@
 const neo4j = require("neo4j-driver");
 
 const neo4jDriver = neo4j.driver(
-    process.env.NEO4J_URI || 'neo4j://localhost',
+    'neo4j://neo4j:7687',
     neo4j.auth.basic('neo4j', 'neo4j')
 );
 
