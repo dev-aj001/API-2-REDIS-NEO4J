@@ -24,6 +24,11 @@ CREATE (e13:Empleado {eid: 'E013', nombre: 'EDGAR JOEL', curp: 'CURP012', tel: '
 CREATE (e14:Empleado {eid: 'E014', nombre: 'JORGE SAUL', curp: 'CURP012', tel: '963852741', cuenta: '0014', fecha_contratacion: '2023-02-01'})
 
 
+CREATE (e15:Empleado {eid: 'E015', nombre: 'URIEL', curp: 'CURP015', tel: '987654321', cuenta: '0005', fecha_contratacion: '2023-02-01'})
+CREATE (e16:Empleado {eid: 'E016', nombre: 'JAIR', curp: 'CURP016', tel: '258147369', cuenta: '0006', fecha_contratacion: '2023-02-01'})
+CREATE (e17:Empleado {eid: 'E017', nombre: 'YAZMIN', curp: 'CURP017', tel: '852963741', cuenta: '0007', fecha_contratacion: '2023-02-01'})
+CREATE (e18:Empleado {eid: 'E018', nombre: 'MANUEL', curp: 'CURP018', tel: '753869421', cuenta: '0008', fecha_contratacion: '2023-02-01'})
+
 // Asignacion de Roles
 // Sucursal 001
 SET e1:Gerente
@@ -45,6 +50,12 @@ SET e12:Desarrollador, e12.especializacion = 'full-stack', e12.lenguaje = 'Java'
 SET e13:Soporte
 SET e14:Soporte
 
+// Sucursal 004
+SET e15:Gerente
+SET e16:Desarrollador, e10.especializacion = 'back-end', e10.lenguaje = 'Python'
+SET e17:Desarrollador, e11.especializacion = 'front-end', e11.lenguaje = 'Java'
+SET e18:Soporte
+
 
 // Creacion de Clientes
 CREATE (c1:Cliente {cid: 'C001', nombre: 'Cliente A', empresa: 'Empresa A', tel: '555555555', correo: 'contacto@empresaA.com'})
@@ -58,6 +69,10 @@ CREATE (p2:Proyecto {pid: 'P002', nombre: 'Proyecto Beta', desc: 'Implementació
 CREATE (p3:Proyecto {pid: 'P003', nombre: 'Proyecto Gamma', desc: 'Implementación de software', fecha_inicio: '2024-04-01', fecha_final: '2024-11-01', presupuesto: 30000})
 CREATE (p4:Proyecto {pid: 'P004', nombre: 'Proyecto Delta', desc: 'Implementación de software', fecha_inicio: '2024-05-01', fecha_final: '2024-12-01', presupuesto: 700000})
 
+CREATE (p5:Proyecto {pid: 'P005', nombre: 'Proyecto 5', desc: 'Implementación de software', fecha_inicio: '2024-05-01', fecha_final: '2024-12-01', presupuesto: 1500000})
+CREATE (p6:Proyecto {pid: 'P006', nombre: 'Proyecto 6', desc: 'Implementación de software', fecha_inicio: '2024-05-01', fecha_final: '2024-12-01', presupuesto: 700000})
+CREATE (p7:Proyecto {pid: 'P007', nombre: 'Proyecto 7', desc: 'Implementación de software', fecha_inicio: '2024-05-01', fecha_final: '2024-12-01', presupuesto: 700000})
+CREATE (p8:Proyecto {pid: 'P008', nombre: 'Proyecto 8', desc: 'Implementación de software', fecha_inicio: '2024-05-01', fecha_final: '2024-12-01', presupuesto: 700000})
 
 // Creacion de Reuniones
 CREATE (r1:Reunion {id: 'R001', fecha: '2024-10-27', hora: '15:00', descripcion: 'Revisión de proyecto'})
@@ -87,11 +102,22 @@ CREATE (e12)-[:TRABAJA_EN]->(s3)
 CREATE (e13)-[:TRABAJA_EN]->(s3)
 CREATE (e14)-[:TRABAJA_EN]->(s3)
 
+// Sucursal 004
+CREATE (e15)-[:TRABAJA_EN]->(s2)
+CREATE (e16)-[:TRABAJA_EN]->(s2)
+CREATE (e17)-[:TRABAJA_EN]->(s2)
+CREATE (e18)-[:TRABAJA_EN]->(s2)
+
 
 // Relacion Gerente-Proyecto [:GESTIONADO_POR]
 CREATE (p1)-[:GESTIONADO_POR]->(e1)
 CREATE (p2)-[:GESTIONADO_POR]->(e5)
 CREATE (p3)-[:GESTIONADO_POR]->(e9)
+
+CREATE (p5)-[:GESTIONADO_POR]->(e15)
+CREATE (p6)-[:GESTIONADO_POR]->(e15)
+CREATE (p7)-[:GESTIONADO_POR]->(e15)
+CREATE (p8)-[:GESTIONADO_POR]->(e15)
 
 
 // Relacion Desarrollador-Proyecto [:PROGRAMADO_POR]
@@ -104,6 +130,11 @@ CREATE (p2)-[:PROGRAMADO_POR]->(e7)
 CREATE (p3)-[:PROGRAMADO_POR]->(e10)
 CREATE (p3)-[:PROGRAMADO_POR]->(e11)
 CREATE (p3)-[:PROGRAMADO_POR]->(e12)
+
+CREATE (p8)-[:PROGRAMADO_POR]->(e2)
+CREATE (p7)-[:PROGRAMADO_POR]->(e2)
+CREATE (p6)-[:PROGRAMADO_POR]->(e2)
+
 
 
 // Relacion Soporte-Proyecto [:SOPORTADO_POR]
@@ -166,13 +197,13 @@ RETURN s.nombre AS NombreSucursal, numEmpleados
 // Q02. Encontrar los gerentes que gestionan más de 3 proyectos simultáneamente.
 MATCH (e:Gerente)<-[:GESTIONADO_POR]-(p:Proyecto)
 WITH e, COUNT(p) AS numProyectos
-WHERE numProyectos > 1
+WHERE numProyectos > 3
 RETURN e
 
 // Q03. Obtener la lista de desarrolladores con especialización en back-end que están trabajando en más de 2 proyectos.
 MATCH (e:Desarrollador{especializacion: 'back-end'})<-[:PROGRAMADO_POR]-(p:Proyecto)
 WITH e, COUNT(p) AS numProyectos
-WHERE numProyectos > 1
+WHERE numProyectos > 2
 RETURN e
 
 // Q04. Obtener la lista de proyectos que tienen un presupuesto mayor a $1,000,000.
@@ -251,3 +282,4 @@ DELETE rel
 
 // Crear nueva relación con la sucursal de destino
 CREATE (empleado)-[:TRABAJA_EN]->(sucursalDestino)
+
