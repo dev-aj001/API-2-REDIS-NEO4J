@@ -259,114 +259,114 @@ A continuación, se listan las queries necesarias para resolver el caso presenta
 
 2. **Consulta 2:** `Encontrar los gerentes que gestionan más de 3 proyectos simultáneamente.`
     ```cypher
-MATCH (e:Gerente)<-[:GESTIONADO_POR]-(p:Proyecto)
-WITH e, COUNT(p) AS numProyectos
-WHERE numProyectos > 3
-RETURN e
+    MATCH (e:Gerente)<-[:GESTIONADO_POR]-(p:Proyecto)
+    WITH e, COUNT(p) AS numProyectos
+    WHERE numProyectos > 3
+    RETURN e
     ```
 
 3. **Consulta 3:** `Obtener la lista de desarrolladores con especialización en back-end que están trabajando en más de 2 proyectos.`
     ```cypher
-MATCH (e:Desarrollador{especializacion: 'back-end'})<-[:PROGRAMADO_POR]-(p:Proyecto)
-WITH e, COUNT(p) AS numProyectos
-WHERE numProyectos > 2
-RETURN e
+    MATCH (e:Desarrollador{especializacion: 'back-end'})<-[:PROGRAMADO_POR]-(p:Proyecto)
+    WITH e, COUNT(p) AS numProyectos
+    WHERE numProyectos > 2
+    RETURN e
     ```
 
 4. **Consulta 1:** `Obtener la lista de proyectos que tienen un presupuesto mayor a $1,000,000.`
     ```cypher
-MATCH (p:Proyecto)
-WITH p, p.presupuesto AS presupuesto
-WHERE presupuesto > 1000000
-RETURN p
+    MATCH (p:Proyecto)
+    WITH p, p.presupuesto AS presupuesto
+    WHERE presupuesto > 1000000
+    RETURN p
     ```
 
 5. **Consulta 2:** `Listar los empleados de soporte técnico de todas las sucursales`
     ```cypher
-MATCH (e:Soporte)
-RETURN e
+    MATCH (e:Soporte)
+    RETURN e
     ```
 
 6. **Consulta 3:** `Encontrar los proyectos que corresponden a un cliente en específico.`
     ```cypher
-MATCH (p:Proyecto)<-[:CONTRATA]-(c:Cliente{cid: 'C002'})
-RETURN p
+    MATCH (p:Proyecto)<-[:CONTRATA]-(c:Cliente{cid: 'C002'})
+    RETURN p
     ```
 
 7. **Consulta 1:** `Obtener la lista de sucursales que han recibido visitas de más de 5 clientes diferentes.`
     ```cypher
-MATCH (c:Cliente)-[:VISITA]->(s:Sucursal)
-WITH s, COUNT(DISTINCT c) AS numClientes
-WHERE numClientes > 1
-RETURN s
+    MATCH (c:Cliente)-[:VISITA]->(s:Sucursal)
+    WITH s, COUNT(DISTINCT c) AS numClientes
+    WHERE numClientes > 1
+    RETURN s
     ```
 
 8. **Consulta 2:** `Encontrar a los desarrolladores que han trabajado en proyectos con un presupuesto total mayor a $500,000.`
     ```cypher
-MATCH (p:Proyecto)-[:PROGRAMADO_POR]->(e:Desarrollador)
-WITH e, p.presupuesto AS presupuesto
-WHERE presupuesto > 1000000
-RETURN e
+    MATCH (p:Proyecto)-[:PROGRAMADO_POR]->(e:Desarrollador)
+    WITH e, p.presupuesto AS presupuesto
+    WHERE presupuesto > 1000000
+    RETURN e
     ```
 
 9. **Consulta 3:** `Obtener la lista de clientes que han contratado más de 3 proyectos en diferentes sucursales.`
     ```cypher
-MATCH (p:Proyecto)<-[:CONTRATA]-(c:Cliente)
-WITH c, COUNT(p) AS nunmProyectos
-WHERE nunmProyectos > 1
-RETURN c
+    MATCH (p:Proyecto)<-[:CONTRATA]-(c:Cliente)
+    WITH c, COUNT(p) AS nunmProyectos
+    WHERE nunmProyectos > 1
+    RETURN c
     ```
 
 10. **Consulta 1:** `Encontrar las sucursales que tienen más de 5 desarrolladores especializados en full-stack.`
     ```cypher
-MATCH (e:Desarrollador{especializacion: 'full-satck'})-[:TRABAJA_EN]->(s:Sucursal)
-WITH e, COUNT(e) AS nunmEmpleados
-WHERE nunmEmpleados > 0
-RETURN e
+    MATCH (e:Desarrollador{especializacion: 'full-satck'})-[:TRABAJA_EN]->(s:Sucursal)
+    WITH e, COUNT(e) AS nunmEmpleados
+    WHERE nunmEmpleados > 0
+    RETURN e
     ```
 
 11. **Consulta 2:** `Transferir todos los empleados de soporte técnico de una sucursal en específico hacia otra sucursal.`
     ```cypher
-MATCH (e:Soporte)-[r:TRABAJA_EN]->(s:Sucursal {clave: 'S002'})
-DELETE r
-CREATE (e)-[:TRABAJA_EN]->(s3)
+    MATCH (e:Soporte)-[r:TRABAJA_EN]->(s:Sucursal {clave: 'S002'})
+    DELETE r
+    CREATE (e)-[:TRABAJA_EN]->(s3)
     ```
 
 12. **Consulta 3:** `Reemplaza al gerente de una sucursal en específico.`
     ```cypher
-MATCH (e1:Gerente)-[r1:TRABAJA_EN]->(s1:Sucursal {clave: 'S001'})
-DELETE r1
+    MATCH (e1:Gerente)-[r1:TRABAJA_EN]->(s1:Sucursal {clave: 'S001'})
+    DELETE r1
 
-MATCH (e2:Gerente)-[r2:TRABAJA_EN]->(s2:Sucursal {clave: 'S002'})
-DELETE r2
+    MATCH (e2:Gerente)-[r2:TRABAJA_EN]->(s2:Sucursal {clave: 'S002'})
+    DELETE r2
 
-CREATE (e1)-[:TRABAJA_EN]->(s2)
-CREATE (e2)-[:TRABAJA_EN]->(s1)
+    CREATE (e1)-[:TRABAJA_EN]->(s2)
+    CREATE (e2)-[:TRABAJA_EN]->(s1)
     ```
 
 13. **Consulta 1:** ` Cambie un proyecto en específico a otra sucursal, incluyendo la totalidad de participantes en el proyecto.`
     ```cypher
-MATCH (p:Proyecto)-[r:GESTIONADO_POR]->(s:Sucursal {clave: 'S001'})
-DELETE r
+    MATCH (p:Proyecto)-[r:GESTIONADO_POR]->(s:Sucursal {clave: 'S001'})
+    DELETE r
 
-CREATE (p)-[:DESARROLLADO_POR]->(s:Sucursal {clave: 'S002'})
+    CREATE (p)-[:DESARROLLADO_POR]->(s:Sucursal {clave: 'S002'})
     ```
 
 14. **Consulta 2:** `Obtener la lista de clientes que nunca han realizado visitas a las sucursales.`
     ```cypher
-MATCH (c:Cliente)
-WHERE NOT EXISTS ((c)-[:VISITA]->(:Sucursal))
-RETURN c.nombre AS NombreCliente, c.id AS IDCliente
+    MATCH (c:Cliente)
+    WHERE NOT EXISTS ((c)-[:VISITA]->(:Sucursal))
+    RETURN c.nombre AS NombreCliente, c.id AS IDCliente
     ```
 
 15. **Consulta 3:** `Todos los empleados de una sucursal determinada son transferidos a otra sucursal por cierre de sucursal de origen.`
     ```cypher
-MATCH (sucursalOrigen:Sucursal {clave: 'S001'})<-[rel:TRABAJA_EN]-(empleado:Empleado)
-MATCH (sucursalDestino:Sucursal {clave: 'S002'})
+    MATCH (sucursalOrigen:Sucursal {clave: 'S001'})<-[rel:TRABAJA_EN]-(empleado:Empleado)
+    MATCH (sucursalDestino:Sucursal {clave: 'S002'})
 
-DELETE rel
+    DELETE rel
 
-CREATE (empleado)-[:TRABAJA_EN]->(sucursalDestino)
+    CREATE (empleado)-[:TRABAJA_EN]->(sucursalDestino)
     ```
 
 
