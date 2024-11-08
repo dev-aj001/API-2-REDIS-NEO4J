@@ -9,16 +9,14 @@ C19400437
 1. [Introducción](#-introducción)
 2. [Link al Repositorio](#-link-al-repositorio)
 3. [Presentación del Caso](#-presentación-del-caso)
-4. [Modelo de Datos](#-modelo-de-datos)
+4. [Modelo de Datos](#️-escenario-de-datos)
    - [Cypher para Crear Nodos y Relaciones](#-cypher-para-crear-nodos-y-relaciones)
 5. [Consultas Requeridas](#-consultas-requeridas)
 6. [Archivo de Colección de Consultas con Postman](#-archivo-de-colección-de-consultas-con-postman)
 7. [Ejemplos de Consumo de la API](#-ejemplos-de-consumo-de-la-api)
-   - [Ejemplo 1](#ejemplo-1-descripción-del-ejemplo)
-   - [Ejemplo 2](#ejemplo-2-descripción-del-ejemplo)
 8. [Estructura del Proyecto](#-estructura-del-proyecto)
-9. [Código del Backend](#-código-del-backend)
-10. [Docker Compose](#-docker-compose)
+9. [Código del Backend](#-códigos-backend)
+10. [Configuración Docker](#-archivos-docker)
 
 ## 📋 Introducción
 Este proyecto implementa una API REST utilizando contenedores de Redis y Neo4j para gestionar y consultar datos. La arquitectura aprovecha las capacidades de Redis para manejar datos rápidos y temporales como un caching y como logger de todas las peticiones realizadas, mientras que Neo4j se utiliza para gestionar el modelo de datos basado en grafos.
